@@ -1,0 +1,320 @@
+{% include 'sca_freegift_price' with product %}
+
+<div itemscope itemtype="http://schema.org/Product" id="product-{{ product.id }}" class="product-section" data-section-id="{{ section.id }}" data-section-type="product-section">
+
+  <meta itemprop="url" content="{{ shop.url }}{{ product.url }}">
+  <meta itemprop="image" content="{{ product.featured_image.src | img_url: 'grande' }}">
+
+{% if template != 'product.quick' %} {% comment %} Don't show in quick view popup {% endcomment %}
+<!-- For Mobile -->
+  <div id="mobile-product" class="mobile-3">
+    <div class="mobile-gallery">
+      <ul class="slides">
+        {% for image in product.images %}
+        <li data-thumb="{{ image | product_img_url: 'small' }}" data-image-id="{{ image.id }}"><img data-image-id="{{ image.id }}" src="{{ image.src | product_img_url: 'grande' }}" alt="{{ image.alt | escape }}"></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+{% endif %}
+
+  <!-- For Desktop -->
+	<div id="product-photos" class="desktop-7 tablet-3 mobile-3">
+    {% assign featured_image = product.selected_or_first_available_variant.featured_image | default: product.featured_image %}
+    <div class="bigimage desktop-10 tablet-5">
+      <img id="product-main-image" src="{{ featured_image | img_url: '1024x1024' }}" data-image-id="{{ image.id }}" data-zoom-image="{{ featured_image | img_url: 'original' }}" alt='{{ image.alt }}' title="{{ product.title }}"/>
+    </div>
+    <div id="product-gallery" class="desktop-2 tablet-1">
+      <div class="thumbnail-slider">
+        {% for image in product.images %}
+        <div class="slide">
+          <a href="#" data-image="{{ image | product_img_url: '1024x1024' }}" data-image-id="{{ image.id }}" data-zoom-image="{{ image | product_img_url: 'original' }}">
+            <img class="thumbnail" src="{{ image | product_img_url: 'compact' }}" data-image-id="{{ image.id }}" alt="{{ image.alt }}" data-image-id="{{ image.id }}" />
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div id="product-right" class="desktop-5 tablet-3 mobile-3">
+    <div id="product-description">
+      {% if settings.vendor %}<h3>{{ product.vendor }}</h3>{% endif %}
+      <h1 class="product_title" itemprop="name"><div style="position:relative;"> {{ product.title }} <div name="secomapp-fg-image-{{ product.id }}" style="display: none;"> {{ "icon-freegift.png" | asset_url | img_tag: "", "sca-fg-img-collect" }} </div> </div></h1>
+      
+      {% if section.settings.subtitle %}<p>{{ page_title }}</p>{% endif %}
+	  <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+
+      <p id="product-price">
+         {% assign my_value = product.metafields.sf_general.additional_content %}
+        {% if my_value %}
+        <p class="add_cont"> {{ my_value }}</p>
+        {% endif %}
+        {% if product.available %}
+        {% if sca_compare_at_price > sca_price %}
+        <span class="product-price" itemprop="price">{{ sca_price | money }}</span>&nbsp;<span class="was">{{ sca_compare_at_price | money }}</span>
+        {% else %}
+        <span class="product-price2" itemprop="price">{{ sca_price | money }}</span>
+        {% endif %}
+        {% else %}
+        <span class="product-price" itemprop="price">{{ 'products.product.sold_out' | t }}</span>
+        {% endif %}
+      </p>
+ <div class="yotpo bottomLine"
+    data-appkey="31yuzCSjHklVU42OOHhqD4uH1gYEiG3kYAbgIEqh"
+    data-domain="{{shop.permanent_domain | escape }}"
+    data-product-id="{{ product.id }}"
+    data-product-models="{{ product.id }}"
+    data-name="{{ product.title | escape }}"
+    data-url="{{ shop.url }}{{ product.url }}"
+    data-image-url="{{ product.featured_image | product_img_url: 'large' |replace: '?', '%3F' | replace: '&','%26'}}"
+    data-description="{{ product.description | escape }}"
+    data-bread-crumbs="{% for tag in product.tags %}{{ tag | escape }};{% endfor %}">
+</div>
+        <meta itemprop="priceCurrency" content="{{ shop.currency }}">
+        <link itemprop="availability" href="http://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}">
+      {% include 'short-form' %}
+{% if template != 'product.quick' %} {% comment %} Don't show in quick view popup {% endcomment %}
+        {% if section.settings.product-description == 'right' %}
+      {% if product.id == 1433339035742 %}
+      <div class="rte" itemprop="description">{{ product.description }}</div> 
+      {% endif %}
+      
+        {% endif %}
+{% endif %}
+      </div>
+      <div class="sixteen columns mega_tabs_product">
+  {% include 'product-tabs'%}
+  </div>
+      {% comment %}
+      <div class="desc">
+        {% include 'social' with product %}
+        {% if template == 'product.quick' %}
+          <a href="{{ product.url | within_collection }}" class="full-click">{{ 'products.general.view_full' | t }}</a>
+        {% endif %}
+      </div>
+      {% endcomment %}
+    </div>
+{% if template != 'product.quick' %} {% comment %} Don't show in quick view popup {% endcomment %}
+    <ul id="popups">
+      {% if section.settings.popup-one != blank %}<li class="first"><a href="#pop-one" class="fancybox">{{ pages[section.settings.popup-one].title }}</a></li>{% endif %}
+      {% if section.settings.popup-two != blank %}<li><a href="#pop-two" class="fancybox">{{ pages[section.settings.popup-two].title }}</a></li>{% endif %}
+      {% if section.settings.popup-three != blank %}<li><a href="#pop-three" class="fancybox">{{ pages[section.settings.popup-three].title }}</a></li>{% endif %}
+      {% if section.settings.popup-4 %}<li class="last"><a href="#pop-four" class="fancybox">{{ 'products.product.popup_question' | t }}</a></li>{% endif %}
+    </ul>
+     {% if section.settings.popup-one != blank %}<div id="pop-one" style="display: none">{{ pages[section.settings.popup-one].content }}</div>{% endif %}
+     {% if section.settings.popup-two != blank %}<div id="pop-two" style="display: none">{{ pages[section.settings.popup-two].content }}</div>{% endif %}
+     {% if section.settings.popup-three != blank %}<div id="pop-three" style="display: none">{{ pages[section.settings.popup-three].content }}</div>{% endif %}
+     {% if section.settings.popup-4 %}<div id="pop-four" style="display: none">{% include 'question' %}</div>{% endif %}
+{% endif %}
+   </div>
+
+{% if template != 'product.quick' %} {% comment %} Don't show in quick view popup {% endcomment %}
+  {% if section.settings.product-description == 'bottom' %}
+  <div class="clear"></div>
+  <div id="lower-description" class="desktop-8 desktop-push-2 tablet-6 mobile-3">
+    <div class="section-title lines"><h2>{{ 'products.product.details' | t }}</h2></div>
+    <div class="rte" itemprop="description">{{ product.description }}</div>
+  </div>
+  {% endif %}
+  <div class="clear"></div>
+{% comment %}  {% if collection %} 
+  {% include 'related-products' %}
+    {% endif %} 
+  {% endcomment %}
+  {% include 'related-products' %}
+ 
+  <div class="clear"></div>
+  <div class="desktop-12 tablet-6 mobile-3" id="formulated">
+    <p>No synthetic fragrance, color, parabens, sulfates, mineral oil, or animal testing. Ever.</p>
+    <div class="desktop-12 tablet-6 mobile-3" id="product_page_icon">
+      {% for block in section.blocks %}
+  	<img class="p_icon_width" src="{{ block.settings.image | img_url }}">
+	{% endfor %}
+    </div>
+  </div>
+  <div class="clear"></div>
+{% endif %}
+</div>
+<style>
+  #product-right { background: {{ section.settings.product-form-background }}; padding: 20px; border: 7px double {{ section.settings.product-page-border }}; }
+  {% if section.settings.thumbnail-position == 'left' %}
+  .bigimage { float: right! important; }
+  {% endif %}
+    @media screen and ( min-width: 741px ) {
+    {% if section.settings.form-left %}
+      #product-description, #product-description .rte, #product-description h1 { text-align: left; }
+      .add { margin: 0; }
+      ul#popups { text-align: left; }
+      ul#popups li { margin-left: 0; margin-right: 10px; }
+    }
+  {% endif %}
+  {% if section.settings.product-variants == 'swatches' %}
+  .select { display: none; }
+  /* Hiding the drop-downs. */
+  product-variants, .selector-wrapper, .select { display: none; }
+  label[for="product-select-option-{{ option_index }}"] { display: none; }
+  #product-select-option-{{ option_index }} { display: none; }
+  #product-select-option-{{ option_index }} + .custom-style-select-box { display: none !important; }
+  {% endif %}
+  {% if section.settings.swatch-shape == 'circles' %}
+  .swatch .color label {
+    min-width: 34px! important;
+    width: 34px! important;
+    border-radius: 50%;
+    outline: 0! important;
+  }
+  {% endif %}
+</style>
+{% schema %}
+  {
+    "name": "Product page",
+    "settings": [
+    {
+      "type": "color",
+      "id": "product-form-background",
+      "label": "Product options background",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "product-page-border",
+      "label": "Product options border",
+      "default": "#f0f0f0"
+    },
+      {
+        "type": "select",
+        "id": "thumbnail-position",
+        "label": "Thumbnail position",
+        "options": [
+          {
+            "value": "right",
+            "label": "Right"
+          },
+          {
+            "value": "left",
+            "label": "Left"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "product-variants",
+        "label": "Product variants",
+        "info": "Choose how variants are presented",
+        "options": [
+          {
+            "value": "swatches",
+            "label": "Swatches"
+          },
+          {
+            "value": "dropdowns",
+            "label": "Drop downs"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "form-left",
+        "label": "Left align product form",
+        "default": false,
+        "info": "will be centered on mobile"
+      },
+      {
+        "type": "checkbox",
+        "id": "subtitle",
+        "label": "Show page sub title",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "product_quantity",
+        "label": "Show quantity selector"
+      },
+      {
+        "type": "checkbox",
+        "id": "show-sku",
+        "label": "Show variant SKU",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "product-description",
+        "label": "Description position",
+        "options": [
+          {
+            "value": "right",
+            "label": "Right Side"
+          },
+          {
+            "value": "bottom",
+            "label": "Below Images and Product Options"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "use-swatch-images",
+        "label": "Show custom swatch images",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "swatch-shape",
+        "label": "Color swatch shape",
+        "options": [
+          {
+            "value": "circles",
+            "label": "circles"
+          },
+          {
+            "value": "rectangles",
+            "label": "Rectangles"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Additional info popups"
+      },
+      {
+        "type": "paragraph",
+        "content": "Add some more content to your product pages, each will popup in a lightbox window"
+      },
+      {
+        "type": "page",
+        "id": "popup-one",
+        "label": "Choose content for first popup"
+      },
+      {
+        "type": "page",
+        "id": "popup-two",
+        "label": "Choose content for second popup"
+      },
+      {
+        "type": "page",
+        "id": "popup-three",
+        "label": "Choose content for third popup"
+      },
+      {
+        "type": "checkbox",
+        "id": "popup-4",
+        "label": "Show contact form",
+        "default": true
+      }
+	],
+	"blocks": [
+	{
+      "type": "image_picker",
+      "name": "Formulated Icon",
+      "settings": [
+        {
+          "label": "Icon",
+          "id": "image",
+          "type": "image_picker"
+        }
+      ]
+    }
+	]
+  }
+{% endschema %}

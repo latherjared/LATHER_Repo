@@ -1,0 +1,33 @@
+<div class ="hotel_last">
+  <h3>Our Customers Love Lather</h3>
+  <div class ="hotel_cont_sec">
+    {% for block in section.blocks %}
+       {% assign title = block.settings.name %}
+       {% assign content = block.settings.content %}
+     <div class ="hotel_last_cont">
+       <p>{{ content }}</p>
+       <h4>{{ title }}</h4>
+     </div>
+    {% endfor %}
+    </div>
+</div>
+{% schema %}
+    {
+        "blocks": [ {
+            "type": "text",
+            "name": "Customer Love Section",
+            "settings": [
+           {
+                "type": "richtext",
+                "id": "content",
+                "label": "Content"
+            },
+           {
+                "type": "text",
+                "id": "name",
+                "label": "Customer Name"
+            }
+           ]
+        } ]
+    }
+{% endschema %}

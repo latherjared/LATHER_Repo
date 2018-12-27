@@ -1,0 +1,47 @@
+ 
+<div class="article-index desktop-6 tablet-6 mobile-3{% cycle ' ', '' %}" id="article-{{ article.id }}" data-alpha="{{ article.title }}">   
+  <div class="article-info new_blg_d"> 
+    <div class="article-info-inner">
+      <div class="article-content new_cntent_c">
+        <div class="f_blog_img">
+        {% if article.image %}<a href="{{ article.url }}"><img class="article-image" src="{{ article.image | img_url: '600x' }}" alt="{{ article.title }}"></a>{% endif %}
+        </div>
+        <div class="author_img">
+          {% assign authorImage = article.author.first | append:'_' | append: article.author.last | append:'.jpg' %}
+
+
+        </div>
+      </div>
+      
+      <div class="d_blg">
+       
+      <h2><a href="{{ article.url }}">{{ article.title }}</a>{{ article.published_at | time_tag: '%b  %Y' }}</h2>
+         {% if section.settings.show-date %}
+      {% assign published_at = article.published_at | date: format: 'month_date_year' %}
+      {% endif %}
+           {% if template != 'index' %}
+      {% if article.tags.size > 0 %}
+      <ul class="centered-tags">
+        {% for tag in article.tags %} 
+        <li class="tags">
+          <a class="blog_text" href="{{ blog.url }}/tagged/{{ tag | handle }}">
+            {{ tag }}
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+      {% endif %} 
+      <div class="readmore new_btn">
+        <a class="learn_btn" href="{{ article.url }}">Learn more</a>
+      </div>
+      {% endif %}
+      </div>
+      
+      
+      
+     
+      
+     
+    </div>
+  </div>
+</div>

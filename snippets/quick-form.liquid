@@ -1,0 +1,150 @@
+{% include 'sca_freegift_price' with product %}
+
+<form action="/cart/add" method="post" data-product-id="{{ product.id }}" data-money-format="{{ shop.money_format }}" id="AddToCartForm" data-product="{{ product | json | escape }}">
+  {% if product.options.size > 1 %}
+  <div class="select">
+    <select id="product-select-{{ product.id }}" name='id'>
+      {% for variant in product.variants %}
+{% unless variant.metafields.secomapp.freegifts %}
+{% unless variant.title contains '(Freegifts)' %}
+
+      <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money }}</option>
+
+{%endunless%}
+{%endunless%}
+      {% endfor %}
+    </select>
+  </div>
+  {% for option in product.options %}
+  {% include 'swatch' with option %}
+  {% endfor %}
+  {% elsif product.options.size == 1 and sca_product_variantCount > 1 %}
+  <div class="select">
+    <label>{{ product.options[0] }}</label>
+    <select id="product-select-{{ product.id }}" name='id'>
+      {% for variant in product.variants %}
+{% unless variant.metafields.secomapp.freegifts %}
+{% unless variant.title contains '(Freegifts)' %}
+
+      <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money }}</option>
+
+{%endunless%}
+{%endunless%}
+      {% endfor %}
+    </select>
+  </div>
+  {% for option in product.options %}
+  {% include 'swatch' with option %}
+  {% endfor %}
+  {% else %}
+  <div class="what-is-it">
+    {% if product.options.first != 'Title' %}
+    <label>{{ product.options.first }}:</label>{% for variant in product.variants %}
+{% unless variant.metafields.secomapp.freegifts %}
+{% unless variant.title contains '(Freegifts)' %}
+<span class="it-is">{{ variant.option1 | escape }}</span>
+{%endunless%}
+{%endunless%}
+{% endfor %}
+    {% endif %}
+  </div>
+  <div class="product-variants"></div><!-- product variants -->
+  <input  type="hidden" id="{{ variant.id }}" name="id" value="{{ product.variants[0].id }}" />
+  {% endif %}
+
+  {% if product.available %}
+  <div class="product-add">
+    {% if settings.product_quantity %}
+    <h5>{{ 'products.product.quantity' | t }}</h5>
+    <a class="down" field="quantity"><i class="icon-minus"></i></a>
+    <input min="1" type="text" name="quantity" class="quantity" value="1" />
+    <a class="up" field="quantity"><i class="icon-plus"></i></a>
+    {% endif %}
+    <input type="submit" name="button" id="addToCart" class="add" value="{{ 'products.product.add_to_cart' | t }}" />
+  </div>
+  {% endif %}
+</form>
+<div class="sca-fg-cat-list" style="display: none;" name="secomapp-fg-data-{{ product.id }}"> </div>
+
+
+
+<script>
+  // Shopify Product form requirement
+  selectCallback = function(variant, selector) {
+    var $product = $('#product-' + selector.product.id);
+
+    jQuery(function() {
+      jQuery('.swatch :radio').change(function() {
+        var optionIndex = jQuery(this).closest('.swatch').attr('data-option-index');
+        var optionValue = jQuery(this).val();
+        jQuery(this)
+        .closest('form')
+        .find('.single-option-selector')
+        .eq(optionIndex)
+        .val(optionValue)
+        .trigger('change');
+      });
+    });
+
+    if (variant && variant.available == true) {
+      if(variant.compare_at_price > variant.price){
+        $('.was', $product).html(Shopify.formatMoney(variant.compare_at_price, $('form', $product).data('money-format')))
+      } else {
+        $('.was', $product).text('')
+      }
+      $('.product-price', $product).html(Shopify.formatMoney(variant.price, $('form', $product).data('money-format')))
+      $('.add', $product).removeClass('disabled').removeAttr('disabled').val('{{ 'products.product.add_to_cart' | t }}');
+    } else {
+      var message = variant ? "{{ 'products.product.sold_out' | t }}" : "{{ 'products.product.sold_out' | t }}";
+      $('.was', $product).text('')
+      $('.product-price', $product).text(message);
+      $('.add', $product).addClass('disabled').attr('disabled', 'disabled').val(message);
+    }
+
+
+    if (variant && variant.featured_image) {
+      var original_image = $("#product-main-image"), new_image = variant.featured_image;
+      Shopify.Image.switchImage(new_image, original_image[0], function (new_image_src, original_image, element) {
+
+        $(element).parents('a').attr('href', new_image_src);
+        $(element).attr('src', new_image_src);
+        $(element).attr('data-image', new_image_src);
+        $(element).attr('data-zoom-image',new_image_src);
+
+        $('.thumbnail[data-image-id="' + variant.featured_image.id + '"]').trigger('click');
+
+      });
+    }
+
+  {% if settings.show_multiple_currencies %}
+    Currency.convertAll(shopCurrency, Currency.currentCurrency);
+    jQuery('.selected-currency').text(Currency.currentCurrency);
+  {% endif %}
+
+  };
+</script>
+
+{% if sca_product_variantCount > 1 or product.options.size > 1 %}
+<script type="text/javascript">
+  $(function() {
+    $product = $('#product-' + {{ product.id }});
+"undefined"==typeof freegifts_product_json&&(window.freegifts_product_json=function(e){if(e){for(var i=0;i<e.options.length;i++)if(option=e.options[i],option.values)for(var r=0;r<option.values.length;r++)(option.values[r].endsWith("(Freegifts)")||option.values[r].endsWith("% off)"))&&(option.values.splice(r,1),r--);for(var a=function(e){for(var i in e)if(e.hasOwnProperty(i))return!1;return!0},p=e.price,t=e.price_max,o=e.price_min,n=e.compare_at_price,_=e.compare_at_price_max,c=e.compare_at_price_min,i=0;i<e.variants.length;i++){var r=e.variants[i],s=r.option3?r.option3:r.option2?r.option2:r.option1;"undefined"!=typeof SECOMAPP&&"undefined"!=typeof SECOMAPP.gifts_list_avai&&!a(SECOMAPP.gifts_list_avai)&&"undefined"!=typeof SECOMAPP.gifts_list_avai[r.id]||s.endsWith("(Freegifts)")||s.endsWith("% off)")?(e.variants.splice(i,1),i-=1):(t>=r.price&&(t=r.price,p=r.price),o<=r.price&&(o=r.price),r.compare_at_price&&(_>=r.compare_at_price&&(_=r.compare_at_price,n=r.compare_at_price),c<=r.compare_at_price&&(c=r.compare_at_price)),1==r.available&&(e.available=!0))}e.price=p,e.price_max=o,e.price_min=t,e.compare_at_price=n,e.compare_at_price_max=c,e.compare_at_price_min=_,e.price_varies=o>t?!0:!1,e.compare_at_price_varies=c>_?!0:!1}return e});
+var sca_product_info = freegifts_product_json ( {{ product | json }} );
+    new Shopify.OptionSelectors("product-select-{{ product.id }}", { product: sca_product_info, onVariantSelected:
+    selectCallback, enableHistoryState: true });
+
+    jQuery('.swatch :radio').change(function() {
+      var optionIndex = jQuery(this).closest('.swatch').attr('data-option-index');
+      var optionValue = jQuery(this).val();
+      jQuery(this)
+      .closest('form')
+      .find('.single-option-selector')
+      .eq(optionIndex)
+      .val(optionValue)
+      .trigger('change');
+    });
+
+   });
+</script>
+{% endif %}
+<script>$(window).load(function() { $('.selector-wrapper:eq({{ option_index }})').hide(); });</script>

@@ -1,0 +1,276 @@
+<div class="footer-section" data-section-id="{{ section.id }}" data-section-type="footer-section">
+{% if section.settings.bottom_logo != blank %}
+<div class="row">
+  <div id="bottom-logo" class="desktop-12 tablet-6 mobile-12">
+      {%- assign image_size = '800x' -%}
+      <a href="/">
+        <img src="{{ section.settings.bottom_logo | img_url: image_size }}" alt="{{ section.settings.bottom_logo.alt | default: shop.name }}">
+      </a>
+  </div>
+</div>
+<style>
+  @media screen and ( min-width: 740px ) {
+  #bottom-logo img { max-width: {{ section.settings.bottom_logo_max_width }}px; }
+  }
+</style>
+{% endif %}
+
+<footer>
+  <div id="footer-wrapper">
+         <div class="for_mob" id="for_mobsing">
+          <h4>Sign up to receive 10% off your first order</h4>
+          <p>{{ settings.footer_signup_text | escape }}</p>
+            {% form 'customer' %}
+            {{ form.errors | default_errors }}
+            {% if form.posted_successfully? %}
+            {% else %}
+            <input type="hidden" name="contact[tags]" value="prospect, password page">
+            <input type="email" name="contact[email]" id="footer-EMAIL" placeholder="{{ 'general.newsletter_form.newsletter_email' | t }}">
+            <input type="submit" id="footer-subscribe" value="{{ 'general.newsletter_form.submit' | t }}">
+            {% endif %}
+            {% endform %}
+             <ul id="new_footer-icons" class="for_mob">
+              {% if settings.facebook_url != blank %}<li><a href="{{ settings.facebook_url }}" target="_blank"><i class="fa fa-facebook fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+              {% if settings.instagram-id != blank %}<li><a href="{{ settings.instagram-id }}" target="_blank"><i class="fa fa-instagram fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+              {% if settings.twittername != blank %}<li><a href="{{ settings.twittername }}" target="_blank"><i class="fa fa-twitter fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+              {% if settings.pinterest_url != blank %}<li><a href="{{ settings.pinterest_url }}" target="_blank"><i class="fa fa-pinterest fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+              {% if settings.tumblr_url != blank %}<li><a href="{{ settings.tumblr_url }}" target="_blank"><i class="fa fa-tumblr fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+              {% if settings.youtube_url != blank %}<li><a href="{{ settings.youtube_url }}" target="_blank"><i class="fa fa-youtube fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+              {% if settings.googleplus_url != blank %}<li><a href="{{ settings.googleplus_url }}" target="_blank"><i class="fa fa-google-plus fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+              {% if settings.snapchat-id != blank %}<li><a href="//snapchat.com/add/{{ settings.snapchat-id }}" target="_blank"><i class="fa fa-snapchat-ghost fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+              {% if settings.weibo-id != blank %}<li><a href="//weibo.com/{{ settings.weibo-id }}" target="_blank"><i class="fa fa-weibo fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+               </ul>
+               <p class="for_mob">For info on LATHER hotel products visit <a href="http://www.latherhotel.com/" target="_blank">www.latherhotel.com</a></p>
+          </div>
+    <div id="footer" class="row">
+
+    {% case section.blocks.size %}
+      {% when 0 %}
+      {% when 1 %}
+        {% assign column_width = 'desktop-12 tablet-6 mobile-6' %}
+      {% when 2 %}
+        {% assign column_width = 'desktop-6 tablet-3 mobile-6' %}
+      {% when 3 %}
+        {% assign column_width = 'desktop-4 tablet-3 mobile-6' %}
+      {% when 4 %}
+        {% assign column_width = 'desktop-3 tablet-3 mobile-6' %}
+    {% endcase %}
+      {% for block in section.blocks %}
+      {% case block.type %}
+      {% when 'menu' %}
+      <div class="{{ column_width }} f_menu_width">
+        <h4>{{ block.settings.title | escape }}</h4>
+        <ul {{ block.shopify_attributes }}>
+          {% for link in linklists[block.settings.footer_nav].links %}
+          <li>{{ link.title | link_to: link.url }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% when 'newsletter' %}
+      <div class="{{ column_width }} new_width_f_newsletter">
+        <div id="footer_signup">
+          <div class="for_deskt">
+          <h4>{{ block.settings.title | escape }}</h4>
+          <p>{{ settings.footer_signup_text | escape }}</p>
+            {% form 'customer' %}
+            {{ form.errors | default_errors }}
+            {% if form.posted_successfully? %}
+            <p class="success">{{ 'password.general.thanks' | t }}</p>
+            {% else %}
+            <input type="hidden" name="contact[tags]" value="prospect, password page">
+            <input type="email" name="contact[email]" id="footer-EMAIL" placeholder="{{ 'general.newsletter_form.newsletter_email' | t }}">
+            <input type="submit" id="footer-subscribe" value="{{ 'general.newsletter_form.submit' | t }}">
+            {% endif %}
+            {% endform %}
+          </div>
+          <div class="icon_f_link">
+             <ul id="new_footer-icons" class="for_deskt">
+
+              {% if settings.facebook_url != blank %}<li><a href="{{ settings.facebook_url }}" target="_blank"><i class="fa fa-facebook fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+              {% if settings.instagram-id != blank %}<li><a href="{{ settings.instagram-id }}" target="_blank"><i class="fa fa-instagram fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+              {% if settings.twittername != blank %}<li><a href="{{ settings.twittername }}" target="_blank"><i class="fa fa-twitter fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+              {% if settings.pinterest_url != blank %}<li><a href="{{ settings.pinterest_url }}" target="_blank"><i class="fa fa-pinterest fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+              {% if settings.tumblr_url != blank %}<li><a href="{{ settings.tumblr_url }}" target="_blank"><i class="fa fa-tumblr fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+              {% if settings.youtube_url != blank %}<li><a href="{{ settings.youtube_url }}" target="_blank"><i class="fa fa-youtube fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+              {% if settings.googleplus_url != blank %}<li><a href="{{ settings.googleplus_url }}" target="_blank"><i class="fa fa-google-plus fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+              {% if settings.snapchat-id != blank %}<li><a href="//snapchat.com/add/{{ settings.snapchat-id }}" target="_blank"><i class="fa fa-snapchat-ghost fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+              {% if settings.weibo-id != blank %}<li><a href="//weibo.com/{{ settings.weibo-id }}" target="_blank"><i class="fa fa-weibo fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+             
+              <li class="for_deskt">
+                <p>For info on LATHER hotel products visit <a href="http://www.latherhotel.com/" target="_blank">www.latherhotel.com</a></p>
+             </li> 
+               </ul>
+          </div>
+        </div>
+      </div>
+      {% endcase %}
+      {% endfor %}
+      <div class="clear"></div>
+      {% comment %}
+      <ul id="footer-icons" class="desktop-12 tablet-6 mobile-12">
+          {% if settings.facebook_url != blank %}<li><a href="{{ settings.facebook_url }}" target="_blank"><i class="fa fa-facebook fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+          {% if settings.instagram-id != blank %}<li><a href="//instagram.com/{{ settings.instagram-id }}" target="_blank"><i class="fa fa-instagram fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+          {% if settings.twittername != blank %}<li><a href="{{ settings.twittername }}" target="_blank"><i class="fa fa-twitter fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+          {% if settings.pinterest_url != blank %}<li><a href="{{ settings.pinterest_url }}" target="_blank"><i class="fa fa-pinterest fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+          {% if settings.tumblr_url != blank %}<li><a href="{{ settings.tumblr_url }}" target="_blank"><i class="fa fa-tumblr fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+          {% if settings.youtube_url != blank %}<li><a href="{{ settings.youtube_url }}" target="_blank"><i class="fa fa-youtube fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+          {% if settings.googleplus_url != blank %}<li><a href="{{ settings.googleplus_url }}" target="_blank"><i class="fa fa-google-plus fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+          {% if settings.snapchat-id != blank %}<li><a href="//snapchat.com/add/{{ settings.snapchat-id }}" target="_blank"><i class="fa fa-snapchat-ghost fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+          {% if settings.weibo-id != blank %}<li><a href="//weibo.com/{{ settings.weibo-id }}" target="_blank"><i class="fa fa-weibo fa-2x" aria-hidden="true"></i></a></li>{% endif %}
+      </ul>
+      
+      <div class="clear"></div>
+
+      <div class="credit desktop-12 tablet-6 mobile-12">
+        {% for type in shop.enabled_payment_types %}
+        <img src="{{ type | payment_type_img_url }}" />
+        {% endfor %}
+        <p>
+          {{ 'layout.footer.copyright' | t }} &copy; {{ 'now' | date: "%Y" }} {{ shop.name | link_to: '/' }} •
+          <a href="//www.shopifythemes.net" target="_blank" title="Shopify theme">Shopify Theme</a>
+          {{ 'layout.footer.theme_title' | t }} Underground • 
+          {{ powered_by_link | replace: '" target', '?ref=undergroundmedia" target' }}
+        </p>
+      </div>
+            {% endcomment %}
+    </div>
+    
+  </div>
+  <div class="cust_text">
+      <p><a class="pipeline" href="https://lather2018.myshopify.com/pages/terms">Terms + Conditions</a></p>
+      <p><a class="pipeline" href ="https://lather2018.myshopify.com/pages/privacy">Privacy Policy</a></p>
+      <p>© 2018 LATHER Inc.</p>
+    </div>
+</footer>
+
+<style>
+  #footer-wrapper {
+    text-align: {{ section.settings.footer_text_align }};
+  }
+
+  #footer-wrapper h4 {
+    text-transform: {{ section.settings.footer_title_transform }};
+    font-size: {{ section.settings.footer_title_size }}px;
+    font-weight: {{ section.settings.footer_title_weight }};
+  }
+</style>
+</div>
+{% schema %}
+{
+    "name": "Footer",
+	"max_blocks": 4,
+    "settings": [
+    {
+      "type": "image_picker",
+      "id": "bottom_logo",
+      "label": "Logo image"
+    },
+      {
+        "type":      "range",
+        "id":        "bottom_logo_max_width",
+        "min":       100,
+        "max":        600,
+        "step":       10,
+        "unit":       "px",
+        "label":     "Footer logo image width",
+        "default":   300
+      },
+     {
+        "type": "select",
+        "id": "footer_text_align",
+        "label": "Footer text align",
+        "options": [
+          {
+            "value": "left",
+            "label": "left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "footer_title_weight",
+        "label": "Footer title weight",
+        "options": [
+          {
+            "value": "300",
+            "label": "Light"
+          },
+          {
+            "value": "500",
+            "label": "Normal"
+          },
+          {
+            "value": "700",
+            "label": "Bold"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "footer_title_transform",
+        "label": "Footer title case",
+        "options": [
+          {
+            "value": "uppercase",
+            "label": "Uppercase"
+          },
+          {
+            "value": "inherit",
+            "label": "regular"
+          }
+        ]
+      },
+      {
+        "type":      "range",
+        "id":        "footer_title_size",
+        "min":       12,
+        "max":        36,
+        "step":       1,
+        "unit":       "px",
+        "label":     "Footer title size",
+        "default":   14
+      }
+    ],
+   "blocks":[
+      {
+         "type":"menu",
+         "name":"Menu",
+         "settings":[
+            {
+               "type": "link_list",
+               "id": "footer_nav",
+               "label": "Choose a menu",
+               "info": "This menu won't show dropdown items"
+            },
+           {
+            "type": "text",
+            "id": "title",
+            "label": "Menu title",
+            "default": "Explore"
+           }
+         ]
+      },
+      {
+        "type": "newsletter",
+        "name": "Newsletter signup",
+        "limit": 1,
+		"settings":[
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Mailing list section title",
+            "default": "Connect"
+           }
+		]
+	  }
+   ]
+  }
+{% endschema %}

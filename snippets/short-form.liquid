@@ -1,0 +1,113 @@
+{% include 'sca_freegift_price' with product %}
+
+{% if section.settings.show-sku %}<span class="variant-sku">{{ product.variants.first.sku }}</span>{% endif %}
+
+<form action="/cart/add" method="post" data-money-format="{{ shop.money_format }}" data-product-id="{{ product.id }}" enctype="multipart/form-data" class="prod-form product_form" id="AddToCartForm" data-product="{{ product | json | escape }}">
+  {% if product.options.size > 1 %}
+  <div class="select">
+    <select id="product-select-{{ product.id }}" name='id'>
+      {% for variant in product.variants %}
+{% unless variant.metafields.secomapp.freegifts %}
+{% unless variant.title contains '(Freegifts)' %}
+
+      {%unless variant.metafields.secomapp.freegifts %}
+      <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} value="{{ variant.id }}" data-sku="{{ variant.sku }}">{{ variant.title }} - {{ variant.price | money }}</option>
+      {%endunless%}
+
+{%endunless%}
+{%endunless%}
+      {% endfor %}
+    </select>
+  </div>
+  {% unless section.settings.product-variants == 'dropdowns' %}
+    {% for option in product.options %}
+    {% include 'swatch' with option %}
+    {% endfor %}
+  {% endunless %}
+  {% elsif product.options.size == 1 and sca_product_variantCount > 1 %}
+  <div class="select">
+    <label>{{ product.options[0] }}</label>
+    <select id="product-select-{{ product.id }}" name='id'>
+      {% for variant in product.variants %}
+{% unless variant.metafields.secomapp.freegifts %}
+{% unless variant.title contains '(Freegifts)' %}
+
+      {%unless variant.metafields.secomapp.freegifts %}
+      <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} value="{{ variant.id }}" data-sku="{{ variant.sku }}">{{ variant.title }} - {{ variant.price | money }}</option>
+      {%endunless%}
+
+{%endunless%}
+{%endunless%}
+      {% endfor %}
+    </select>
+  </div>
+  {% unless section.settings.product-variants == 'dropdowns' %}
+    {% for option in product.options %}
+    {% include 'swatch' with option %}
+    {% endfor %}
+  {% endunless %}
+  {% else %}
+  <div class="what-is-it">
+    {% if product.options.first != 'Title' %}
+    <label>{{ product.options.first }}:</label>{% for variant in product.variants %}
+{% unless variant.metafields.secomapp.freegifts %}
+{% unless variant.title contains '(Freegifts)' %}
+<span class="it-is">{{ variant.option1 | escape }}</span>
+{%endunless%}
+{%endunless%}
+{% endfor %}
+    {% endif %}
+  </div>
+  <div class="product-variants"></div><!-- product variants -->
+  <input  type="hidden" id="{{ variant.id }}" data-sku="{{ variant.sku }}" name="id" value="{{ product.variants[0].id }}" />
+  {% endif %}
+
+  {% if product.available %}
+  <div class="product-add">
+    {% if section.settings.product_quantity %}
+    <div class="qty-selection">
+    <h5>{{ 'products.product.quantity' | t }}</h5>
+    <a class="down" field="quantity">-</a>
+    <input min="1" type="text" name="quantity" class="quantity" value="1" />
+    <a class="up" field="quantity">+</a>
+    </div>
+    {% endif %}
+    <input type="submit" name="button" class="add" id="addToCart" value="{{ 'products.product.add_to_cart' | t }}" />
+  </div>
+  {% endif %}
+</form>
+<div class="sca-fg-cat-list" style="display: none;" name="secomapp-fg-data-{{ product.id }}"> </div>
+
+
+
+{% if sca_product_variantCount > 1 or product.options.size > 1 %}
+<script type="text/javascript">
+  $(function() {
+    $product = $('#product-' + {{ product.id }});
+"undefined"==typeof freegifts_product_json&&(window.freegifts_product_json=function(e){if(e){for(var i=0;i<e.options.length;i++)if(option=e.options[i],option.values)for(var r=0;r<option.values.length;r++)(option.values[r].endsWith("(Freegifts)")||option.values[r].endsWith("% off)"))&&(option.values.splice(r,1),r--);for(var a=function(e){for(var i in e)if(e.hasOwnProperty(i))return!1;return!0},p=e.price,t=e.price_max,o=e.price_min,n=e.compare_at_price,_=e.compare_at_price_max,c=e.compare_at_price_min,i=0;i<e.variants.length;i++){var r=e.variants[i],s=r.option3?r.option3:r.option2?r.option2:r.option1;"undefined"!=typeof SECOMAPP&&"undefined"!=typeof SECOMAPP.gifts_list_avai&&!a(SECOMAPP.gifts_list_avai)&&"undefined"!=typeof SECOMAPP.gifts_list_avai[r.id]||s.endsWith("(Freegifts)")||s.endsWith("% off)")?(e.variants.splice(i,1),i-=1):(t>=r.price&&(t=r.price,p=r.price),o<=r.price&&(o=r.price),r.compare_at_price&&(_>=r.compare_at_price&&(_=r.compare_at_price,n=r.compare_at_price),c<=r.compare_at_price&&(c=r.compare_at_price)),1==r.available&&(e.available=!0))}e.price=p,e.price_max=o,e.price_min=t,e.compare_at_price=n,e.compare_at_price_max=c,e.compare_at_price_min=_,e.price_varies=o>t?!0:!1,e.compare_at_price_varies=c>_?!0:!1}return e});
+var sca_product_info = freegifts_product_json ( {{ product | json }} );
+    new Shopify.OptionSelectors("product-select-{{ product.id }}", { product: sca_product_info, onVariantSelected:
+     selectCallback, enableHistoryState: true });
+  });
+
+  $(document).on('shopify:section:load', function(event) {
+"undefined"==typeof freegifts_product_json&&(window.freegifts_product_json=function(e){if(e){for(var i=0;i<e.options.length;i++)if(option=e.options[i],option.values)for(var r=0;r<option.values.length;r++)(option.values[r].endsWith("(Freegifts)")||option.values[r].endsWith("% off)"))&&(option.values.splice(r,1),r--);for(var a=function(e){for(var i in e)if(e.hasOwnProperty(i))return!1;return!0},p=e.price,t=e.price_max,o=e.price_min,n=e.compare_at_price,_=e.compare_at_price_max,c=e.compare_at_price_min,i=0;i<e.variants.length;i++){var r=e.variants[i],s=r.option3?r.option3:r.option2?r.option2:r.option1;"undefined"!=typeof SECOMAPP&&"undefined"!=typeof SECOMAPP.gifts_list_avai&&!a(SECOMAPP.gifts_list_avai)&&"undefined"!=typeof SECOMAPP.gifts_list_avai[r.id]||s.endsWith("(Freegifts)")||s.endsWith("% off)")?(e.variants.splice(i,1),i-=1):(t>=r.price&&(t=r.price,p=r.price),o<=r.price&&(o=r.price),r.compare_at_price&&(_>=r.compare_at_price&&(_=r.compare_at_price,n=r.compare_at_price),c<=r.compare_at_price&&(c=r.compare_at_price)),1==r.available&&(e.available=!0))}e.price=p,e.price_max=o,e.price_min=t,e.compare_at_price=n,e.compare_at_price_max=c,e.compare_at_price_min=_,e.price_varies=o>t?!0:!1,e.compare_at_price_varies=c>_?!0:!1}return e});
+var sca_product_info = freegifts_product_json ( {{ product | json }} );
+    new Shopify.OptionSelectors("product-select-{{ product.id }}", { product: sca_product_info, onVariantSelected:
+    selectCallback, enableHistoryState: true });
+    {% unless section.settings.product-variants == 'dropdowns' %}
+    jQuery('.swatch :radio').change(function() {
+      var optionIndex = jQuery(this).closest('.swatch').attr('data-option-index');
+      var optionValue = jQuery(this).val();
+      jQuery(this)
+      .closest('form')
+      .find('.single-option-selector')
+      .eq(optionIndex)
+      .val(optionValue)
+      .trigger('change');
+    });
+    {% endunless %}
+  });
+
+</script>
+{% endif %}

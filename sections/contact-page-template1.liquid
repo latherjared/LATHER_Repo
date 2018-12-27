@@ -1,0 +1,40 @@
+<div id="page" class="{% if section.settings.show-narrow-page %}desktop-8 desktop-push-2{% else %}desktop-12{% endif %} tablet-6 mobile-3" data-section-id="{{ section.id }}" data-section-type="page-section">
+  
+  
+  <div id="page-content">
+    <h1 class="page-title"></h1>
+    {% if section.settings.page-sidebar-title %}
+  <div id="page-sidebar" class="desktop-3 tablet-2 mobile-3">
+    <h2 class="side_ttl">{{ section.settings.page-sidebar-title | escape }}</h2>
+    
+  </div>
+  {% endif %}
+    <div {% if section.settings.page-sidebar-title %} class="desktop-9 tablet-4 mobile-3" {% endif %} >
+    
+    {% include 'contact1' %}
+    <div class="rte nw_cnt">{{ page.content }}</div>
+    
+  </div>
+  
+</div>
+
+{% schema %}
+  {
+    "name": "Page options",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show-narrow-page",
+        "label": "Reduced page width",
+		"info": "For narrow pages"
+      },
+      {
+        "type": "text",
+        "id": "page-sidebar-title",
+        "label": "Page sidebar title",
+        "default": "Page sidebar title",
+		"info": "When sidebar menu chosen"
+      }
+    ]
+  }
+{% endschema %}

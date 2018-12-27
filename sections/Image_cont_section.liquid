@@ -1,0 +1,25 @@
+<div class="main_cstm">
+   <div class="right_cstm">
+     <img src ="{{ section.settings.left_img | img_url: '858x613' }}">
+  </div>
+    <div class="left_cstm lft2_cust">
+    {{ section.settings.content }}
+  </div>
+</div>
+{% schema %}
+  {
+    "name": "Image Content Section",
+    "settings": [
+      {  
+        "type": "image_picker",
+        "id": "left_img",
+        "label": "Left Image"
+      },
+      {  
+        "type": "html",
+        "id": "content",
+        "label": "Content"
+      }
+    ]
+  }
+{% endschema %}

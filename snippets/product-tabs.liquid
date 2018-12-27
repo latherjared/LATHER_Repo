@@ -1,0 +1,41 @@
+<ul class="tabs link_detail">
+    <li><h4>Details</h4>
+        <p id="tab1" class="close">{% assign my_value = product.metafields.sf_general.details %}
+            {% if my_value %}
+              {{ my_value }}
+            {% endif %}
+        </p>
+ 	</li>
+    <li><h4>Ingredients</h4>
+        <p id="tab2" class="close">{% assign my_value = product.metafields.sf_general.ingredients %}
+     		 {% if my_value %}
+        		{{ my_value }}
+          	{% endif %} 
+        </p>
+ 	</li>
+  
+  
+  
+  
+    <li><h4>How to use</h4>
+     	 <p id="tab3" class="close" >{% assign my_value = product.metafields.sf_general.how_to_use %}
+            {% if my_value %}
+              {{ my_value }}
+            {% endif %}
+      	  </p>
+     </li>
+     <li><h4>Skin type</h4>
+      	 <p id="tab4" class="close">{% assign my_value = product.metafields.sf_general.skin_type %}
+             {% if my_value %}
+                 {{ my_value }}
+             {% endif %}
+       	  </p>
+     </li>
+     <!--li><h4>Net Weight</h4>
+    		<p id="tab5" class="close">{% assign my_value = product.metafields.sf_general.net_weight %}
+                {% if my_value %}
+                     {{ my_value }}
+              {% endif %}
+       		</p>
+ 	  </li-->
+</ul>

@@ -1,0 +1,45 @@
+{% for block in section.blocks %}
+       {% assign image = block.settings.image %}
+       {% assign title = block.settings.title %}
+       {% assign url = block.settings.url %}
+       {% assign content = block.settings.content %}
+    <div class="makeup_sect">
+      <div class="makeup_img">
+        <a href ="{% if url != blank %}{{ url }}{% endif %}"><img class="timeline__img" src="{{ image | img_url: '200x200'}}"/></a>
+      </div>
+        <div class="makeup_cont_sect">
+          <h2 class="makeup_tilte"><a href ="{% if url != blank %}{{ url }}{% endif %}">{% if title != blank %}{{ title }}{% endif %}</a></h2>
+          <div class="makeup_contcust">{% if content != blank %}{{ content }}{% endif %}</div>
+      </div>
+    </div>
+   {% endfor %}
+
+{% schema %}
+    {
+        "blocks": [ {
+            "type": "image",
+            "name": "Makeup Artist",
+            "settings": [ {
+                "type": "image_picker",
+                "id": "image",
+                "label": "Image"
+            }, 
+            {
+                "type": "text",
+                "id": "title",
+                "label": "Product Title"
+            },
+            {
+                "type": "url",
+                "id": "url",
+                "label": "Product Url"
+            },
+           {
+                "type": "html",
+                "id": "content",
+                "label": "Product Detail"
+            }
+           ]
+        } ]
+    }
+{% endschema %}

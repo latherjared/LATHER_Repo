@@ -1,0 +1,89 @@
+<div id="page" class="{% if section.settings.show-narrow-page %}desktop-8 desktop-push-2{% else %}desktop-12{% endif %} tablet-6 mobile-3" data-section-id="{{ section.id }}" data-section-type="page-section">
+  <div id="page-content"{% if linklists[section.settings.pagelist] != blank %} class="desktop-9 tablet-4 mobile-3{% endif %}">
+    <h1 class="page-title"></h1>
+    <div class="desktop-10 new_cntr tablet-6 mobile-3">
+    <div class="rte pamper-party">{{ page.content }}
+      
+      
+      <!--div class="stores">
+                    <div class="store">
+                    <p>
+                        <strong>Pheonix, Arizona</strong>
+                      <p class="detail_s">Coming Soon...</p>
+                        
+                    <p>
+                      <a href="mailto:scottsdalestore@lather.com"><button type="button" class="button" data-name="Scottsdale, AZ" data-store="1">CLICK TO BOOK</button></a>
+                    </p> 
+            </div>
+                        <div class="store">
+                    <p>
+                        <strong>Pasadena, CA</strong>
+                      <p class="detail_s">Historic Old Town<br>
+                        17 E. Colorado Blvd.<br>
+                        Pasadena, CA 91105<br>
+                        PH 626.396.9636</p>
+                        
+                    <p>
+                      <a href="mailto:Pasadenaevents@lather.com"><button type="button" class="button" data-name="Pasadena, CA" data-store="2">CLICK TO BOOK</button></a>
+                    </p>
+            </div>
+                        <div class="store">
+                    <p>
+                        <strong>Fairfax, VA</strong>
+                      <p class="detail_s">Mosaic Shopping Center<br>
+                        2910 District Ave. #155<br>
+                        Fairfax, VA 22031<br>
+                        PH 571.830.6787</p>
+                        
+                    <p>
+                        <a href="mailto:fairfaxevents@lather.com"><button type="button" class="button" data-name="Fairfax, VA" data-store="3">CLICK TO BOOK</button></a>
+                    </p>
+            </div>
+                </div>
+      <h3 style="font-size: 25px;">
+        Your friends at LATHER can’t wait to pamper you!
+    </h3>
+      <p class="legal">
+        * Please note: A credit card is required to reserve a party. At the time of the event, the host will receive a $50 gift card to enjoy. Hosts must bring a minimum of five guests and a maximum of 14 guests. Cancellations must be made 48 hours prior to the party date. Late cancellations and no-shows will be charged a $40 fee. Pamper party guest and hosts must be 18 years or older.
+    </p-->
+      </div>
+  </div>
+  </div>
+   
+  {% if linklists[section.settings.pagelist] != blank %}
+  <div id="page-sidebar" class="desktop-3 tablet-2 mobile-3">
+    <h2>{{ section.settings.page-sidebar-title | escape }}</h2>
+    <ul>
+      {% for link in linklists[section.settings.pagelist].links %}
+      <li>{{ link.title | link_to: link.url }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+</div>
+
+{% schema %}
+  {
+    "name": "Page options",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show-narrow-page",
+        "label": "Reduced page width",
+		"info": "For narrow pages"
+      },
+      {
+        "type": "link_list",
+        "id": "pagelist",
+        "label": "Choose a menu for the page sidebar"
+      },
+      {
+        "type": "text",
+        "id": "page-sidebar-title",
+        "label": "Page sidebar title",
+        "default": "Page sidebar title",
+		"info": "When sidebar menu chosen"
+      }
+    ]
+  }
+{% endschema %}

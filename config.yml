@@ -1,0 +1,6 @@
+development:
+  password: 88647cfa9e6b2294a053cf89637ae494
+  theme_id: "32696860766"
+  store: lather2018.myshopify.com
+  ignore_files:
+    - config/settings_data.json

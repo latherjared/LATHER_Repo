@@ -1,0 +1,125 @@
+{% layout none %}
+<script>
+  // Shopify Product form requirement
+  selectCallback = function(variant, selector) {
+    var $product = $('#product-' + selector.product.id);
+
+    jQuery(function() {
+      jQuery('.swatch :radio').change(function() {
+        var optionIndex = jQuery(this).closest('.swatch').attr('data-option-index');
+        var optionValue = jQuery(this).val();
+        jQuery(this)
+        .closest('form')
+        .find('.single-option-selector')
+        .eq(optionIndex)
+        .val(optionValue)
+        .trigger('change');
+      });
+    });
+
+    if (variant && variant.available == true) {
+      if(variant.compare_at_price > variant.price){
+        $('.was', $product).html(Shopify.formatMoney(variant.compare_at_price, $('form', $product).data('money-format')))
+      } else {
+        $('.was', $product).text('')
+      }
+      $('.product-price', $product).html(Shopify.formatMoney(variant.price, $('form', $product).data('money-format')))
+      if ($("#AddToCartForm").hasClass("pre_order")) {
+        $('.add', $product).removeClass('disabled').removeAttr('disabled').val({{ 'products.product.pre_order' | t | json }});
+          } else {
+        $('.add', $product).removeClass('disabled').removeAttr('disabled').val({{ 'products.product.add_to_cart' | t | json }});
+      }
+    } else {
+      var message = variant ? "{{ 'products.product.sold_out' | t }}" : "{{ 'products.product.sold_out' | t }}";
+      $('.was', $product).text('')
+      $('.product-price', $product).text(message);
+      $('.add', $product).addClass('disabled').attr('disabled', 'disabled').val(message);
+    }
+    if (variant && variant.featured_image) {
+      var original_image = $("#product-main-image"), new_image = variant.featured_image;
+      Shopify.Image.switchImage(new_image, original_image[0], function (new_image_src, original_image, element) {
+        $(element).parents('a').attr('href', new_image_src);
+        $(element).attr('src', new_image_src);
+        $(element).attr('data-image', new_image_src);
+        $(element).attr('data-zoom-image',new_image_src);
+        $('.thumb[data-image-id="' + variant.featured_image.id + '"]').trigger('click');
+      });
+    }
+
+  {% if settings.show_multiple_currencies %}
+    Currency.convertAll(shopCurrency, Currency.currentCurrency);
+    jQuery('.selected-currency').text(Currency.currentCurrency);
+  {% endif %}
+
+  };
+  $('.thumbnail-slider').bxSlider({
+    mode: 'vertical',
+    minSlides: 4,
+    slideMargin: 10,
+    infiniteLoop: false,
+    pager: false,
+    prevText: "",
+    nextText: "",
+    hideControlOnEnd: true
+  });
+  $('.slide a').click(function() {
+    var newImage = $(this).attr('data-image');
+    $( '#product-main-image' ).attr({ src: newImage });
+    return false;
+  });
+</script>
+
+<div class="row quick-shop">
+{% section 'product-template' %}
+</div>
+
+<script>
+  // Quantity values
+  $('.up').click(function(e){
+    e.preventDefault();
+    fieldName = $(this).attr('field');
+    // Get its current value
+    var currentVal = parseInt($('input[name='+fieldName+']').val());
+    // If is not undefined
+    if (!isNaN(currentVal)) {
+      // Increment
+      $('input[name='+fieldName+']').val(currentVal + 1);
+    } else {
+      // Otherwise put a 0 there
+      $('input[name='+fieldName+']').val(1);
+    }
+  });
+  $(".down").click(function(e) {
+    e.preventDefault();
+    fieldName = $(this).attr('field');
+    // Get its current value
+    var currentVal = parseInt($('input[name='+fieldName+']').val());
+    // If it isn't undefined or its greater than 0
+    if (!isNaN(currentVal) && currentVal > 1) {
+      // Decrement one
+      $('input[name='+fieldName+']').val(currentVal - 1);
+    } else {
+      // Otherwise put a 0 there
+      $('input[name='+fieldName+']').val(1);
+    }
+  });
+
+{% if settings.ajax_cart_method != 'page' %}
+  jQuery(function($) {
+    ajaxifyShopify.init({
+      method: '{{ settings.ajax_cart_method }}',
+      wrapperClass: 'page-wrap',
+      formSelector: '#AddToCartForm',
+      addToCartSelector: '#addToCart',
+      cartCountSelector: '#item_count',
+      toggleCartButton: '.my-cart-link',
+      useCartTemplate: false,
+      btnClass: 'btn',
+      moneyFormat: {{ settings.money_format | json }},
+      disableAjaxCart: false,
+      enableQtySelectors: true
+    });
+  });
+  {% endif %}
+</script>
+</div>

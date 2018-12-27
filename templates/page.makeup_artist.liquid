@@ -1,0 +1,68 @@
+<style>
+  .artist_main {
+    display: inline-flex;
+    width: 100%;
+}
+  .artist_cont h3{
+    color: #9d9d9d !important;
+}
+  .artist_cont h4 a{
+    color: #4d4d4d !important;
+}
+  .artist_cont p a{
+    color: #4d4d4d !important;
+}
+.artist_main {
+    display: inline-flex;
+    width: 95%;
+    margin: 0 0 0 18px;
+}
+hr.make_hr {
+    border-top: 1px solid #ccc;
+}
+.makeup_sect {
+    width: 78%;
+    margin: 0 0 0px 13em;
+    height: 100%;
+    min-height: 250px;
+}
+.makeup_cont_sect {
+    width: 70%;
+    float: left;
+    margin: 17px 0 0 0;
+}
+  .makeup_img {
+    width: 24%;
+    float: left;
+}
+  .makeup_contcust p{
+     color:#9d9d9d !important;
+  }
+  h2.makeup_tilte a{
+    color: #4d4d4d !important;
+}
+  .artist_imgf h3 {
+    color: #4d4d4d;
+    margin: 30px 0;
+}
+  
+ @media screen and (max-width: 740px) { 
+  .artist_main {
+    display: block;
+    width: 100%;
+    margin: 0px;
+}
+.makeup_sect {
+    width: 100%;
+    margin: 0px;
+    height: 100%;
+    min-height: 250px;
+}
+.makeup_cont_sect {
+    width: 76%;
+}
+ }
+</style>
+<div class="rte">{{ page.content }}</div>
+
+{% section 'makeup_artist' %}

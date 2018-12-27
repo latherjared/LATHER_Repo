@@ -1,0 +1,27 @@
+  <div class="desktop-12 tablet-6 mobile-3 homepage_icons" id="formulated">
+    <h2>Our products are formulated <span class="bold">without...</span></h2>
+    <div class="desktop-12 tablet-6 mobile-3" id="product_page_icon">
+      {% for block in section.blocks %}
+  	<img class="p_icon_width" src="{{ block.settings.image | img_url }}">
+	{% endfor %}
+    </div>
+  </div>
+{% schema %}
+  {
+    "name": "Formulated Icon",
+	"blocks": [
+	{
+      "type": "image_picker",
+      "name": "Formulated Icon",
+      "settings": [
+        {
+          "label": "Icon",
+          "id": "image",
+          "type": "image_picker"
+        }
+      ]
+    }
+	]
+  }
+{% endschema %}
+

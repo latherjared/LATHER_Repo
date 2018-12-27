@@ -1,0 +1,27 @@
+<div class ="hotel1_sec" style ="background-image:url('{{ section.settings.bg-image | img_url: '1024x1024' }}');"></div>
+<div class ="cont1_sec">
+  <h1>{{ section.settings.title }}</h1>
+  <p>{{ section.settings.content }}</p>
+</div>
+{% schema %}
+  {
+    "name": "Banner Section",
+    "settings": [
+      {  
+        "type": "image_picker",
+        "id": "bg-image",
+        "label": "Banner"
+      },
+      {  
+        "type": "text",
+        "id": "title",
+        "label": "Title"
+      },
+     {  
+        "type": "richtext",
+        "id": "content",
+        "label": "Content"
+      }
+    ]
+  }
+{% endschema %}
